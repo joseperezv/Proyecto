@@ -1,0 +1,12 @@
+[2023-12-11T21:16:28.407+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: ETL_NASA.get_asteroid_data_task scheduled__2023-11-04T00:00:00+00:00 [queued]>
+[2023-12-11T21:16:28.463+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: ETL_NASA.get_asteroid_data_task scheduled__2023-11-04T00:00:00+00:00 [queued]>
+[2023-12-11T21:16:28.465+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 2
+[2023-12-11T21:16:28.697+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): get_asteroid_data_task> on 2023-11-04 00:00:00+00:00
+[2023-12-11T21:16:28.736+0000] {standard_task_runner.py:57} INFO - Started process 148 to run task
+[2023-12-11T21:16:28.748+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'ETL_NASA', 'get_asteroid_data_task', 'scheduled__2023-11-04T00:00:00+00:00', '--job-id', '65', '--raw', '--subdir', 'DAGS_FOLDER/dag_nasa.py', '--cfg-path', '/tmp/tmph1hnsu58']
+[2023-12-11T21:16:28.751+0000] {standard_task_runner.py:85} INFO - Job 65: Subtask get_asteroid_data_task
+[2023-12-11T21:16:39.001+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 65 for task get_asteroid_data_task ((psycopg2.OperationalError) could not translate host name "postgres" to address: Temporary failure in name resolution
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8); 148)
+[2023-12-11T21:16:40.012+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2023-12-11T21:16:40.167+0000] {taskinstance.py:2778} INFO - 0 downstream tasks scheduled from follow-on schedule check

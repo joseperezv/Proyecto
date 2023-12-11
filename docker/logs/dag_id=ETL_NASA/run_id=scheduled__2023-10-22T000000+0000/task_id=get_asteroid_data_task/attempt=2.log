@@ -1,0 +1,2 @@
+[2023-12-11T21:14:33.289+0000] {taskinstance.py:1149} INFO - Dependencies not met for <TaskInstance: ETL_NASA.get_asteroid_data_task scheduled__2023-10-22T00:00:00+00:00 [success]>, dependency 'Task Instance State' FAILED: Task is in the 'success' state.
+[2023-12-11T21:14:33.393+0000] {local_task_job_runner.py:154} INFO - Task is not able to be run

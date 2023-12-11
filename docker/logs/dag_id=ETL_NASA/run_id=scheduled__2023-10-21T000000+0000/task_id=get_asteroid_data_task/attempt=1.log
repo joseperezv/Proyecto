@@ -1,0 +1,27 @@
+[2023-12-11T00:55:46.856+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: ETL_NASA.get_asteroid_data_task scheduled__2023-10-21T00:00:00+00:00 [queued]>
+[2023-12-11T00:55:46.890+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: ETL_NASA.get_asteroid_data_task scheduled__2023-10-21T00:00:00+00:00 [queued]>
+[2023-12-11T00:55:46.891+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 2
+[2023-12-11T00:55:46.942+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): get_asteroid_data_task> on 2023-10-21 00:00:00+00:00
+[2023-12-11T00:55:46.961+0000] {standard_task_runner.py:57} INFO - Started process 131 to run task
+[2023-12-11T00:55:46.984+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'ETL_NASA', 'get_asteroid_data_task', 'scheduled__2023-10-21T00:00:00+00:00', '--job-id', '21', '--raw', '--subdir', 'DAGS_FOLDER/dag_nasa.py', '--cfg-path', '/tmp/tmpwhm2ffqj']
+[2023-12-11T00:55:46.991+0000] {standard_task_runner.py:85} INFO - Job 21: Subtask get_asteroid_data_task
+[2023-12-11T00:55:47.223+0000] {task_command.py:416} INFO - Running <TaskInstance: ETL_NASA.get_asteroid_data_task scheduled__2023-10-21T00:00:00+00:00 [running]> on host d9b326dafe4c
+[2023-12-11T00:55:47.528+0000] {taskinstance.py:1662} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Jose Daniel Pérez' AIRFLOW_CTX_DAG_ID='ETL_NASA' AIRFLOW_CTX_TASK_ID='get_asteroid_data_task' AIRFLOW_CTX_EXECUTION_DATE='2023-10-21T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2023-10-21T00:00:00+00:00'
+[2023-12-11T00:55:48.651+0000] {logging_mixin.py:154} INFO - Conexion exitosa
+[2023-12-11T00:55:48.663+0000] {python.py:194} INFO - Done. Returned value was:            Nombre  ... Distancia a la Tierra (kilómetros)
+0    (2006 UL185)  ...                 33691526.585975446
+1    (2013 TC136)  ...                 69415696.996901268
+2      (2017 RP2)  ...                 42690875.045076463
+3      (2019 TA7)  ...                   48048608.3317157
+4      (2020 TH6)  ...                 16431658.167807157
+..            ...  ...                                ...
+225    (2023 UU1)  ...                   526036.271085811
+226    (2023 UR3)  ...                    2577400.7585282
+227   (2023 UM10)  ...                   750370.574095725
+228    (2023 VF1)  ...                 22799576.563098442
+229    (2023 WH3)  ...                  5910104.303006451
+
+[230 rows x 4 columns]
+[2023-12-11T00:55:48.867+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=ETL_NASA, task_id=get_asteroid_data_task, execution_date=20231021T000000, start_date=20231211T005546, end_date=20231211T005548
+[2023-12-11T00:55:48.942+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2023-12-11T00:55:49.002+0000] {taskinstance.py:2778} INFO - 1 downstream tasks scheduled from follow-on schedule check
