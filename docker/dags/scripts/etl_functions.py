@@ -1,11 +1,41 @@
-
 import requests
 import pandas as pd
-
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from datetime import datetime, timedelta
+import psycopg2
 
 api_key = 'vaJwtaRz3N8gCPfOQeh9rOtjRJvchtNyRyvPMZEl'
 start_date = '2023-10-10'
 end_date = '2023-10-17'
+
+smtp_server = 'smtp.gmail.com'
+smtp_port = 587
+smtp_username = 'joseperezv65@gmail.com'
+smtp_password = 'bzyu txgy umvd belo'
+sender_email = 'joseperezv65@gmail.com'
+receiver_email = 'alvaherra@gmail.com'
+
+# Thresholds para las alertas
+diameter_threshold = 100  # Diámetro estimado en metros
+distance_threshold = 500000  # Distancia a la Tierra en kilómetros
+
+def send_email(subject, body):
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = receiver_email
+    message['Subject'] = subject
+
+    body_html = MIMEText(body, 'html')
+    message.attach(body_html)
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        text = message.as_string()
+        server.sendmail(sender_email, receiver_email, text)
 
 def get_asteroid_data(api_key, start_date, end_date):
     url = f'https://api.nasa.gov/neo/rest/v1/feed?start_date={start_date}&end_date={end_date}&api_key={api_key}'
@@ -29,15 +59,32 @@ def get_asteroid_data(api_key, start_date, end_date):
                 asteroid_data.append(asteroid_info)
 
         print("Conexion exitosa")
-        return pd.DataFrame(asteroid_data)
+        df = pd.DataFrame(asteroid_data)
+
+        df['Distancia a la Tierra (kilómetros)'] = pd.to_numeric(df['Distancia a la Tierra (kilómetros)'], errors='coerce')
+
+        alert_table = "<table border='1'><tr><th>Nombre</th><th>Fecha de aproximación más cercana</th><th>Diámetro estimado (metros)</th><th>Distancia a la Tierra (kilómetros)</th></tr>"
+        for index, row in df.iterrows():
+
+            if pd.notna(row['Distancia a la Tierra (kilómetros)']):
+                distancia_tierra = int(row['Distancia a la Tierra (kilómetros)'])
+
+                if row['Diámetro estimado (metros)'] > diameter_threshold or distancia_tierra > distance_threshold:
+                    alert_table += f"<tr><td>{row['Nombre']}</td><td>{row['Fecha de aproximación más cercana']}</td><td>{row['Diámetro estimado (metros)']}</td><td>{row['Distancia a la Tierra (kilómetros)']}</td></tr>"
+
+        alert_table += "</table>"
+
+        if alert_table != "<table border='1'><tr><th>Nombre</th><th>Fecha de aproximación más cercana</th><th>Diámetro estimado (metros)</th><th>Distancia a la Tierra (kilómetros)</th></tr></table>":
+           
+            send_email("Alertas de Asteroides", alert_table)
+
     else:
         print("La solicitud a la API falló.")
-        return None
+        df = None
 
-get_asteroid_data(api_key, start_date, end_date)
+    return df
 
-
-
+df = get_asteroid_data(api_key, start_date, end_date)
 
 import psycopg2
 redshift_credentials = {
@@ -47,8 +94,6 @@ redshift_credentials = {
     'port': 5439,
     'database': 'data-engineer-database'
 }
-
-df = get_asteroid_data(api_key='vaJwtaRz3N8gCPfOQeh9rOtjRJvchtNyRyvPMZEl', start_date='2023-10-10', end_date='2023-10-17')
 
 def load_data_to_redshift(df, redshift_credentials):
     if df is not None:
